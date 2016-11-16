@@ -11,8 +11,7 @@ namespace ProcessChain.Builder
     {
         public static Scheme Build(IList<NodeInfo> nodes, IList<ConnectionInfo> connections)
         {
-            if (nodes == null || !nodes.Any()) throw new ArgumentOutOfRangeException(nameof(nodes));
-            if (connections == null || !nodes.Any()) throw new ArgumentOutOfRangeException(nameof(connections));
+            ValidateModel(nodes, connections);
 
             List<Extractor> extractors = nodes.Where(t => t.Type == NodeType.Extractor).Select(t => new Extractor(t.Id)).ToList();
             List<Consumer> consumers = nodes.Where(t => t.Type == NodeType.Consumer).Select(t => new Consumer(t.Id)).ToList();
@@ -55,5 +54,77 @@ namespace ProcessChain.Builder
             return new Scheme(extDict, elemsDict, consDict, connsDict);
             
         }
+
+        #region Validation
+
+        private static void ValidateModel(IList<NodeInfo> nodes, IList<ConnectionInfo> connections)
+        {
+            if (nodes == null || !nodes.Any()) throw new ArgumentOutOfRangeException(nameof(nodes));
+            if (connections == null || !nodes.Any()) throw new ArgumentOutOfRangeException(nameof(connections));
+
+            ValidateBaseConnections(nodes, connections);
+            ValidateExtractorConnections(nodes, connections);
+            ValidateConsumerConnections(nodes, connections);
+            ValidateInstallationsConnections(nodes, connections);
+        }
+
+        /// <summary>
+        /// Проверяет что для всех соединений есть узлы, а для всех узлов - соединения
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="connections"></param>
+        private static void ValidateBaseConnections(IList<NodeInfo> nodes, IList<ConnectionInfo> connections)
+        {
+            //проверяем что для всех соединений есть узлы
+            var invalidConn = connections.FirstOrDefault(t => !nodes.Any(g => g.Id == t.StartNodeId) ||
+                !nodes.Any(g => g.Id == t.EndNodeId));
+
+            if (invalidConn != null)
+                throw new InvalidOperationException($"Connection {invalidConn.Id} have't nodes");
+
+            //проверяем что для всех узлов есть соединения
+            var invalidNode = nodes.FirstOrDefault(t => !connections.Any(g => g.StartNodeId == t.Id || g.EndNodeId == t.Id));
+
+            if (invalidNode != null)
+                throw new InvalidOperationException($"Node {invalidNode.Id} have't connection");
+        }
+
+        /// <summary>
+        /// Проверяет, что для генераторов нет входных соединений
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="connections"></param>
+        private static void ValidateExtractorConnections(IList<NodeInfo> nodes, IList<ConnectionInfo> connections)
+        {
+            var invalidExtractor = nodes.FirstOrDefault(t => t.Type == NodeType.Extractor &&
+                connections.Any(g => g.EndNodeId == t.Id));
+
+            if (invalidExtractor != null)
+                throw new InvalidOperationException($"Extractor {invalidExtractor.Id}. Extractors musn't have input connections");
+        }
+
+        /// <summary>
+        /// Проверяет что для хранилищ нет выходных соединений
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="connections"></param>
+        private static void ValidateConsumerConnections(IList<NodeInfo> nodes, IList<ConnectionInfo> connections)
+        {
+            var invalidConsumer = nodes.FirstOrDefault(t => t.Type == NodeType.Consumer && connections.Any(g => g.StartNodeId == t.Id));
+
+            if (invalidConsumer != null)
+                throw new InvalidOperationException($"Consumer {invalidConsumer.Id}. Consumer musn't have output connections");
+        }
+        
+        private static void ValidateInstallationsConnections(IList<NodeInfo> nodes, IList<ConnectionInfo> connections)
+        {
+            var invalidInstallation = nodes.FirstOrDefault(t => t.Type == NodeType.Installation &&
+                (!connections.Any(g => g.StartNodeId == t.Id) || !connections.Any(g => g.EndNodeId == t.Id)));
+
+            if (invalidInstallation != null)
+                throw new InvalidOperationException($"Installation {invalidInstallation.Id} must have input and output connections");
+        }
+
+        #endregion
     }
 }

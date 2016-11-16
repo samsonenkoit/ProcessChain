@@ -21,6 +21,140 @@ namespace ProcessChainTest
         }
 
         [Test]
+        public void BuildAllConnectionsHaveNodeForStartIdValidationTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null)
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
+                new ConnectionInfo("c3", "n5", "n3", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
+        public void BuildAllConnectionsHaveNodeForEndIdValidationTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null)
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n5", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
+        public void BuildAllNodesHaveConnectionValidationTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null),
+                new NodeInfo("n5", NodeType.Consumer, null)
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
+        public void BuildExtractorsHaveNotInputConnectionsTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null),
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
+                new ConnectionInfo("c3", "n2", "n1", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
+        public void BuildConsumersHaveNotOutputConnectionsTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null),
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
+                new ConnectionInfo("c3", "n3", "n2", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
+        public void BuildInstallationsHaveInputConnectionsTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n5", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null),
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
+                new ConnectionInfo("c3", "n5", "n3", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
+        public void BuildInstallationsHaveOutputConnectionsTest()
+        {
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n5", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n3", NodeType.Consumer, null),
+            };
+            List<ConnectionInfo> conns = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
+                new ConnectionInfo("c3", "n2", "n5", new FlowConnectionQuota(2))
+            };
+
+            Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
+        }
+
+        [Test]
         public void BuildTest1()
         {
             List<NodeInfo> nodes = new List<NodeInfo>()
