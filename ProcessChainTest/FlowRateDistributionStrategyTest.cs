@@ -24,7 +24,7 @@ namespace ProcessChainTest
         #endregion
 
         [Test]
-        public void ConstructorInputParamsValidationTest()
+        public void ConstructorParamsValidationTest()
         {
             Func<IEnumerable<FlowConnection>, IEnumerable<FlowConnection>, IDictionary<string, double>> func = FlowRateDistributionStrategy.MaxByQuotes;
 

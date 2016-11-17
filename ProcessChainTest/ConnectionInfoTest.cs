@@ -13,7 +13,7 @@ namespace ProcessChainTest
     public class ConnectionInfoTest
     {
         [Test]
-        public void ConstructorValidationTest()
+        public void ConstructorParameterValidationTest()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new ConnectionInfo("", "1", "2", new FlowConnectionQuota(12)));
             Assert.Throws<ArgumentOutOfRangeException>(() => new ConnectionInfo("1", "", "2", new FlowConnectionQuota(12)));

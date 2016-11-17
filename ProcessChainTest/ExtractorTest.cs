@@ -27,7 +27,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void UpdateFlowRateValidationTest()
+        public void UpdateFlowRateParameterValidationTest()
         {
             Extractor ext = new Extractor("1");
 

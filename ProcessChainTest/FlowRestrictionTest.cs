@@ -13,7 +13,7 @@ namespace ProcessChainTest
     public class FlowRestrictionTest
     {
         [Test]
-        public void ConstructorValidationTest()
+        public void ConstructorParameterValidationTest()
         {
             Assert.Throws<ArgumentNullException>(() => { new FlowRestriction(FlowRestrictionTypes.FlowRateValueMaximum, null, 12); });
         }
