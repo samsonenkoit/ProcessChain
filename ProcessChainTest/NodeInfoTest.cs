@@ -15,9 +15,9 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorTest()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new NodeInfo("", NodeType.Consumer, new FlowElementScope(1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new NodeInfo("", NodeType.Consumer, new NodeScope(1)));
 
-            var scope = new FlowElementScope(12);
+            var scope = new NodeScope(12);
 
             var nodeInfo = new NodeInfo("21", NodeType.Extractor, scope);
 

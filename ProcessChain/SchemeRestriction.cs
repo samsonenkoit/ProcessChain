@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessChain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace ProcessChain
     /// <summary>
     /// Ограничение обновления схемы
     /// </summary>
-    public class FlowRestriction
+    public class SchemeRestriction
     {
         /// <summary>
         /// Тип ограничения
@@ -35,7 +36,7 @@ namespace ProcessChain
         /// <summary>
         /// Элемент, вызвавший ограничение
         /// </summary>
-        public FlowElement Element { get; private set; }
+        public NodeElement Element { get; private set; }
 
         /// <summary>
         /// Величина показывает разницу между ожидаемым значением и фактическим, например если в узле величина
@@ -43,7 +44,7 @@ namespace ProcessChain
         /// </summary>
         public double RestrictionValue { get; private set; }
 
-        public FlowRestriction(FlowRestrictionTypes type, FlowElement element, double restrictionValue)
+        public SchemeRestriction(FlowRestrictionTypes type, NodeElement element, double restrictionValue)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
 

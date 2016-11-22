@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessChain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProcessChain
 {
-    public class Consumer : FlowElement
+    public class Consumer : NodeElement
     {
-        private Dictionary<string, FlowConnection> _inputConnections;
+        private Dictionary<string, NodeConnection> _inputConnections;
 
 
         private double _flowRate;
@@ -24,21 +25,21 @@ namespace ProcessChain
         {
         }
         
-        internal void SetInputConnections(IEnumerable<FlowConnection> connections)
+        internal void SetInputConnections(IEnumerable<NodeConnection> connections)
         {
             if (connections == null) throw new ArgumentNullException(nameof(connections));
             if (_inputConnections != null) throw new InvalidOperationException("Connections is already existed");
 
-            _inputConnections = new Dictionary<string, FlowConnection>();
+            _inputConnections = new Dictionary<string, NodeConnection>();
 
             foreach (var con in connections)
                 _inputConnections.Add(con.Id, con);
         }
 
-        internal override FlowRateUpdateResult UpdateFlowRates()
+        internal override SchemeRateUpdateResult UpdateFlowRates()
         {
             _flowRate = _inputConnections.Sum(t => t.Value.CurrentRate);
-            return new FlowRateUpdateResult();
+            return new SchemeRateUpdateResult();
         }
     }
 }

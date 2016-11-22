@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessChain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,9 @@ namespace ProcessChain
     /// <summary>
     /// Ичтоник вещества. Может иметь только один выходной поток.
     /// </summary>
-    public class Extractor : FlowElement
+    public class Extractor : NodeElement
     {
-        private FlowConnection _outputConnection;
+        private NodeConnection _outputConnection;
         
 
         private double _flowRate;
@@ -32,7 +33,7 @@ namespace ProcessChain
         /// Устанавливает выходной поток. Может иметь только один выходной поток
         /// </summary>
         /// <param name="connection"></param>
-        internal void SetOutputConnection(FlowConnection connection)
+        internal void SetOutputConnection(NodeConnection connection)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
             if (_outputConnection != null) throw new InvalidOperationException("Connection is already existed");
@@ -46,7 +47,7 @@ namespace ProcessChain
         /// </summary>
         /// <param name="flowRate"></param>
         /// <returns></returns>
-        public FlowRateUpdateResult FlowRateUpdate(double flowRate)
+        public SchemeRateUpdateResult FlowRateUpdate(double flowRate)
         {
             if (flowRate < 0.0d) throw new ArgumentOutOfRangeException(nameof(flowRate));
 
@@ -54,7 +55,7 @@ namespace ProcessChain
             return UpdateFlowRates();
         }
 
-        internal override FlowRateUpdateResult UpdateFlowRates()
+        internal override SchemeRateUpdateResult UpdateFlowRates()
         {
             return _outputConnection.FlowRateUpdate(FlowRate);
         }

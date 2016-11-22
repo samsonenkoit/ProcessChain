@@ -1,4 +1,5 @@
 ﻿using ProcessChain.Extension;
+using ProcessChain.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,12 @@ namespace ProcessChain.Builder
             List<InputsOutputsElement> elements = nodes.Where(t => t.Type == NodeType.Installation)
                 .Select(t => new InputsOutputsElement(t.Id, t.Scope, FlowRateDistributionStrategy.MaxByQuotes)).ToList();
 
-            Dictionary<string, FlowElement> allElements = new Dictionary<string, FlowElement>();
-            allElements.AddRange(extractors.Select(t => new KeyValuePair<string, FlowElement>(t.Id, t)));
-            allElements.AddRange(consumers.Select(t => new KeyValuePair<string, FlowElement>(t.Id, t)));
-            allElements.AddRange(elements.Select(t => new KeyValuePair<string, FlowElement>(t.Id, t)));
+            Dictionary<string, NodeElement> allElements = new Dictionary<string, NodeElement>();
+            allElements.AddRange(extractors.Select(t => new KeyValuePair<string, NodeElement>(t.Id, t)));
+            allElements.AddRange(consumers.Select(t => new KeyValuePair<string, NodeElement>(t.Id, t)));
+            allElements.AddRange(elements.Select(t => new KeyValuePair<string, NodeElement>(t.Id, t)));
 
-            List<FlowConnection> conns = connections.Select(t => new FlowConnection(t.Id, t.Quota,
+            List<NodeConnection> conns = connections.Select(t => new NodeConnection(t.Id, t.Quota,
                 allElements[t.StartNodeId], allElements[t.EndNodeId])).ToList();
 
             foreach(var ext in extractors)
@@ -48,8 +49,8 @@ namespace ProcessChain.Builder
             consDict.AddRange(consumers.Select(t => new KeyValuePair<string, Consumer>(t.Id, t)));
             Dictionary<string, InputsOutputsElement> elemsDict = new Dictionary<string, InputsOutputsElement>();
             elemsDict.AddRange(elements.Select(t => new KeyValuePair<string, InputsOutputsElement>(t.Id, t)));
-            Dictionary<string, FlowConnection> connsDict = new Dictionary<string, FlowConnection>();
-            connsDict.AddRange(conns.Select(t => new KeyValuePair<string, FlowConnection>(t.Id, t)));
+            Dictionary<string, NodeConnection> connsDict = new Dictionary<string, NodeConnection>();
+            connsDict.AddRange(conns.Select(t => new KeyValuePair<string, NodeConnection>(t.Id, t)));
 
             return new Scheme(extDict, elemsDict, consDict, connsDict);
             

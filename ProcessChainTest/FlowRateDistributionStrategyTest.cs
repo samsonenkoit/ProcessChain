@@ -16,9 +16,9 @@ namespace ProcessChainTest
 
         #region Helper
 
-        private FlowConnection BuildConnection(string id, FlowConnectionQuota quota, double flowRate)
+        private NodeConnection BuildConnection(string id, NodeConnectionQuota quota, double flowRate)
         {
-            return new FlowConnection(id, quota, new FlowElementMock("noId"), new FlowElementMock("noId"), flowRate);
+            return new NodeConnection(id, quota, new FlowElementMock("noId"), new FlowElementMock("noId"), flowRate);
         }
 
         #endregion
@@ -26,27 +26,27 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorParamsValidationTest()
         {
-            Func<IEnumerable<FlowConnection>, IEnumerable<FlowConnection>, IDictionary<string, double>> func = FlowRateDistributionStrategy.MaxByQuotes;
+            Func<IEnumerable<NodeConnection>, IEnumerable<NodeConnection>, IDictionary<string, double>> func = FlowRateDistributionStrategy.MaxByQuotes;
 
             Assert.Throws<ArgumentOutOfRangeException>(delegate { func(null, null); });
-            Assert.Throws<ArgumentOutOfRangeException>(delegate { func(new List<FlowConnection>(), new List<FlowConnection>()); });
+            Assert.Throws<ArgumentOutOfRangeException>(delegate { func(new List<NodeConnection>(), new List<NodeConnection>()); });
         }
 
         [Test]
         public void DistributionTest1()
         {
-            List<FlowConnection> inputConnections = new List<FlowConnection>()
+            List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
-                BuildConnection("1", new FlowConnectionQuota(0), 30),
-                BuildConnection("2", new FlowConnectionQuota(0), 20),
-                BuildConnection("3", new FlowConnectionQuota(0), 50)
+                BuildConnection("1", new NodeConnectionQuota(0), 30),
+                BuildConnection("2", new NodeConnectionQuota(0), 20),
+                BuildConnection("3", new NodeConnectionQuota(0), 50)
             };
 
-            List<FlowConnection> outputConnections = new List<FlowConnection>()
+            List<NodeConnection> outputConnections = new List<NodeConnection>()
             {
-                BuildConnection("4", new FlowConnectionQuota(10), 0),
-                BuildConnection("5", new FlowConnectionQuota(60), 0),
-                BuildConnection("6", new FlowConnectionQuota(30), 0)
+                BuildConnection("4", new NodeConnectionQuota(10), 0),
+                BuildConnection("5", new NodeConnectionQuota(60), 0),
+                BuildConnection("6", new NodeConnectionQuota(30), 0)
             };
 
             var newRates = FlowRateDistributionStrategy.MaxByQuotes(inputConnections, outputConnections);
@@ -59,20 +59,20 @@ namespace ProcessChainTest
         [Test]
         public void DistributionTest2()
         {
-            List<FlowConnection> inputConnections = new List<FlowConnection>()
+            List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
-                BuildConnection("1", new FlowConnectionQuota(0), 30),
-                BuildConnection("2", new FlowConnectionQuota(0), 20),
-                BuildConnection("3", new FlowConnectionQuota(0), 50),
-                BuildConnection("3", new FlowConnectionQuota(0), 50),
-                BuildConnection("3", new FlowConnectionQuota(0), 50)
+                BuildConnection("1", new NodeConnectionQuota(0), 30),
+                BuildConnection("2", new NodeConnectionQuota(0), 20),
+                BuildConnection("3", new NodeConnectionQuota(0), 50),
+                BuildConnection("3", new NodeConnectionQuota(0), 50),
+                BuildConnection("3", new NodeConnectionQuota(0), 50)
             };
 
-            List<FlowConnection> outputConnections = new List<FlowConnection>()
+            List<NodeConnection> outputConnections = new List<NodeConnection>()
             {
-                BuildConnection("4", new FlowConnectionQuota(55.7), 0),
-                BuildConnection("5", new FlowConnectionQuota(40), 0),
-                BuildConnection("6", new FlowConnectionQuota(4.3), 0)
+                BuildConnection("4", new NodeConnectionQuota(55.7), 0),
+                BuildConnection("5", new NodeConnectionQuota(40), 0),
+                BuildConnection("6", new NodeConnectionQuota(4.3), 0)
             };
 
             var newRates = FlowRateDistributionStrategy.MaxByQuotes(inputConnections, outputConnections);
@@ -85,22 +85,22 @@ namespace ProcessChainTest
         [Test]
         public void DistributionDirectTest()
         {
-            List<FlowConnection> inputConnections = new List<FlowConnection>()
+            List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
-                BuildConnection("1", new FlowConnectionQuota(0), 30),
-                BuildConnection("2", new FlowConnectionQuota(0), 20),
-                BuildConnection("3", new FlowConnectionQuota(0), 50),
-                BuildConnection("3", new FlowConnectionQuota(0), 50),
-                BuildConnection("3", new FlowConnectionQuota(0), 50)
+                BuildConnection("1", new NodeConnectionQuota(0), 30),
+                BuildConnection("2", new NodeConnectionQuota(0), 20),
+                BuildConnection("3", new NodeConnectionQuota(0), 50),
+                BuildConnection("3", new NodeConnectionQuota(0), 50),
+                BuildConnection("3", new NodeConnectionQuota(0), 50)
             };
 
-            List<FlowConnection> outputConnections = new List<FlowConnection>()
+            List<NodeConnection> outputConnections = new List<NodeConnection>()
             {
-                BuildConnection("4", new FlowConnectionQuota(10, 40), 0),
-                BuildConnection("5", new FlowConnectionQuota(20), 0),
-                BuildConnection("6", new FlowConnectionQuota(30, 10), 0),
-                BuildConnection("7", new FlowConnectionQuota(25), 0),
-                BuildConnection("8", new FlowConnectionQuota(25), 0)
+                BuildConnection("4", new NodeConnectionQuota(10, 40), 0),
+                BuildConnection("5", new NodeConnectionQuota(20), 0),
+                BuildConnection("6", new NodeConnectionQuota(30, 10), 0),
+                BuildConnection("7", new NodeConnectionQuota(25), 0),
+                BuildConnection("8", new NodeConnectionQuota(25), 0)
             };
 
             var newRates = FlowRateDistributionStrategy.MaxByQuotes(inputConnections, outputConnections);
@@ -115,16 +115,16 @@ namespace ProcessChainTest
         [Test]
         public void DistributionBringingTest()
         {
-            List<FlowConnection> inputConnections = new List<FlowConnection>()
+            List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
-                BuildConnection("1", new FlowConnectionQuota(0), 30),
-                BuildConnection("2", new FlowConnectionQuota(0), 20)
+                BuildConnection("1", new NodeConnectionQuota(0), 30),
+                BuildConnection("2", new NodeConnectionQuota(0), 20)
             };
 
-            List<FlowConnection> outputConnections = new List<FlowConnection>()
+            List<NodeConnection> outputConnections = new List<NodeConnection>()
             {
-                BuildConnection("4", new FlowConnectionQuota(130), 0),
-                BuildConnection("5", new FlowConnectionQuota(130), 0)
+                BuildConnection("4", new NodeConnectionQuota(130), 0),
+                BuildConnection("5", new NodeConnectionQuota(130), 0)
             };
 
             var newRates = FlowRateDistributionStrategy.MaxByQuotes(inputConnections, outputConnections);

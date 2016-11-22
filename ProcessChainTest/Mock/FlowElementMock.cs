@@ -1,4 +1,5 @@
 ﻿using ProcessChain;
+using ProcessChain.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ProcessChainTest.Mock
 {
-    public class FlowElementMock : FlowElement
+    public class FlowElementMock : NodeElement
     {
         public Dictionary<string, double> InputFlowRate { get; set; } = new Dictionary<string, double>();
 
-        public FlowConnection Connection { get; set; }
+        public NodeConnection Connection { get; set; }
 
         public override double FlowRate
         {
@@ -35,11 +36,11 @@ namespace ProcessChainTest.Mock
             throw new NotImplementedException();
         }*/
 
-        internal override FlowRateUpdateResult UpdateFlowRates()
+        internal override SchemeRateUpdateResult UpdateFlowRates()
         {
             InputFlowRate[Connection.Id] = Connection.CurrentRate;
 
-            return new FlowRateUpdateResult();
+            return new SchemeRateUpdateResult();
         }
     }
 }

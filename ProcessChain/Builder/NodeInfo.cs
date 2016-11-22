@@ -29,7 +29,7 @@ namespace ProcessChain.Builder
         /// <summary>
         /// Используется только для установок
         /// </summary>
-        public FlowElementScope Scope { get; private set; }
+        public NodeScope Scope { get; private set; }
 
         /// <summary>
         /// 
@@ -37,7 +37,7 @@ namespace ProcessChain.Builder
         /// <param name="id"></param>
         /// <param name="type"></param>
         /// <param name="scope">Используется только для установок (Installation)</param>
-        public NodeInfo(string id, NodeType type, FlowElementScope scope)
+        public NodeInfo(string id, NodeType type, NodeScope scope)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentOutOfRangeException(nameof(id));
 

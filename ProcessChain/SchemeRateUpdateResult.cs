@@ -9,12 +9,12 @@ namespace ProcessChain
     /// <summary>
     /// Результат обновления параметров схемы
     /// </summary>
-    public class FlowRateUpdateResult
+    public class SchemeRateUpdateResult
     {
         /// <summary>
         /// Ошибка обновления
         /// </summary>
-        public FlowRestriction Restriction { get; private set; }
+        public SchemeRestriction Restriction { get; private set; }
 
         public bool IsSuccess
         {
@@ -24,12 +24,12 @@ namespace ProcessChain
             }
         }
 
-        public FlowRateUpdateResult(FlowRestriction restriction)
+        public SchemeRateUpdateResult(SchemeRestriction restriction)
         {
             Restriction = restriction;
         }
 
-        public FlowRateUpdateResult(): this(null)
+        public SchemeRateUpdateResult(): this(null)
         {
 
         }

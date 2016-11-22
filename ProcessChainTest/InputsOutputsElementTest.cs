@@ -17,7 +17,7 @@ namespace ProcessChainTest
         {
             Assert.DoesNotThrow(delegate
             {
-                new InputsOutputsElement("1", new FlowElementScope(1),
+                new InputsOutputsElement("1", new NodeScope(1),
                     FlowRateDistributionStrategy.MaxByQuotes);
             });
             Assert.Throws<ArgumentNullException>(delegate
@@ -27,43 +27,43 @@ namespace ProcessChainTest
             });
             Assert.Throws<ArgumentNullException>(delegate
             {
-                new InputsOutputsElement("1", new FlowElementScope(12), null);
+                new InputsOutputsElement("1", new NodeScope(12), null);
             });
         }
 
         [Test]
         public void SetConnectionsTest()
         {
-            InputsOutputsElement el = new InputsOutputsElement("1", new FlowElementScope(1),
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(1),
                 FlowRateDistributionStrategy.MaxByQuotes);
 
-            Assert.Throws<ArgumentNullException>(() => { el.SetConnections(new List<FlowConnection>(), null); });
-            Assert.Throws<ArgumentNullException>(() => { el.SetConnections(null, new List<FlowConnection>()); });
-            Assert.DoesNotThrow(() => { el.SetConnections(new List<FlowConnection>(), new List<FlowConnection>()); });
-            Assert.Throws<InvalidOperationException>(() => { el.SetConnections(new List<FlowConnection>(), new List<FlowConnection>()); });
+            Assert.Throws<ArgumentNullException>(() => { el.SetConnections(new List<NodeConnection>(), null); });
+            Assert.Throws<ArgumentNullException>(() => { el.SetConnections(null, new List<NodeConnection>()); });
+            Assert.DoesNotThrow(() => { el.SetConnections(new List<NodeConnection>(), new List<NodeConnection>()); });
+            Assert.Throws<InvalidOperationException>(() => { el.SetConnections(new List<NodeConnection>(), new List<NodeConnection>()); });
         }
 
         [Test]
         public void UpdateFlowRatesValidationTest1()
         {
             #region Test data
-            InputsOutputsElement el = new InputsOutputsElement("1", new FlowElementScope(17),
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(17),
                 FlowRateDistributionStrategy.MaxByQuotes);
             FlowElementMock elM1 = new FlowElementMock();
             FlowElementMock elM2 = new FlowElementMock();
             FlowElementMock elM3 = new FlowElementMock();
             FlowElementMock elM4 = new FlowElementMock();
 
-            var inputConn = new List<FlowConnection>()
+            var inputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c1", new FlowConnectionQuota(50), elM1, el, 10),
-                new FlowConnection("c2", new FlowConnectionQuota(50), elM2, el, 20)
+                new NodeConnection("c1", new NodeConnectionQuota(50), elM1, el, 10),
+                new NodeConnection("c2", new NodeConnectionQuota(50), elM2, el, 20)
             };
 
-            var outputConn = new List<FlowConnection>()
+            var outputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c3", new FlowConnectionQuota(20, 13), el, elM3, 30),
-                new FlowConnection("c4", new FlowConnectionQuota(80), el, elM4, 30)
+                new NodeConnection("c3", new NodeConnectionQuota(20, 13), el, elM3, 30),
+                new NodeConnection("c4", new NodeConnectionQuota(80), el, elM4, 30)
             };
 
             el.SetConnections(inputConn, outputConn);
@@ -80,23 +80,23 @@ namespace ProcessChainTest
         public void UpdateFlowRatesValidationTest2()
         {
             #region Test data
-            InputsOutputsElement el = new InputsOutputsElement("1", new FlowElementScope(40),
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(40),
                 FlowRateDistributionStrategy.MaxByQuotes);
             FlowElementMock elM1 = new FlowElementMock();
             FlowElementMock elM2 = new FlowElementMock();
             FlowElementMock elM3 = new FlowElementMock();
             FlowElementMock elM4 = new FlowElementMock();
 
-            var inputConn = new List<FlowConnection>()
+            var inputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c1", new FlowConnectionQuota(50), elM1, el, 10),
-                new FlowConnection("c2", new FlowConnectionQuota(50), elM2, el, 10)
+                new NodeConnection("c1", new NodeConnectionQuota(50), elM1, el, 10),
+                new NodeConnection("c2", new NodeConnectionQuota(50), elM2, el, 10)
             };
 
-            var outputConn = new List<FlowConnection>()
+            var outputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c3", new FlowConnectionQuota(20, 22), el, elM3, 30),
-                new FlowConnection("c4", new FlowConnectionQuota(80), el, elM4, 30)
+                new NodeConnection("c3", new NodeConnectionQuota(20, 22), el, elM3, 30),
+                new NodeConnection("c4", new NodeConnectionQuota(80), el, elM4, 30)
             };
 
             el.SetConnections(inputConn, outputConn);
@@ -113,7 +113,7 @@ namespace ProcessChainTest
         public void UpdateFlowRatesTest()
         {
             #region Test data
-            InputsOutputsElement el = new InputsOutputsElement("1", new FlowElementScope(300),
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(300),
                 FlowRateDistributionStrategy.MaxByQuotes);
             FlowElementMock elM1 = new FlowElementMock();
             FlowElementMock elM2 = new FlowElementMock();
@@ -121,17 +121,17 @@ namespace ProcessChainTest
             FlowElementMock elM4 = new FlowElementMock();
             FlowElementMock elM5 = new FlowElementMock();
 
-            var inputConn = new List<FlowConnection>()
+            var inputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c1", new FlowConnectionQuota(50), elM1, el, 50),
-                new FlowConnection("c2", new FlowConnectionQuota(50), elM2, el, 100)
+                new NodeConnection("c1", new NodeConnectionQuota(50), elM1, el, 50),
+                new NodeConnection("c2", new NodeConnectionQuota(50), elM2, el, 100)
             };
 
-            var outputConn = new List<FlowConnection>()
+            var outputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c3", new FlowConnectionQuota(20, 50), el, elM3, 30),
-                new FlowConnection("c4", new FlowConnectionQuota(19.6), el, elM4, 30),
-                new FlowConnection("c5", new FlowConnectionQuota(80.4), el, elM5, 30)
+                new NodeConnection("c3", new NodeConnectionQuota(20, 50), el, elM3, 30),
+                new NodeConnection("c4", new NodeConnectionQuota(19.6), el, elM4, 30),
+                new NodeConnection("c5", new NodeConnectionQuota(80.4), el, elM5, 30)
             };
 
             elM3.Connection = outputConn[0];
@@ -157,7 +157,7 @@ namespace ProcessChainTest
         [Test]
         public void UpdateOutputConnectionsQuotaValidationTest()
         {
-            InputsOutputsElement el = new InputsOutputsElement("1", new FlowElementScope(300),
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(300),
                 FlowRateDistributionStrategy.MaxByQuotes);
 
             Assert.Throws<ArgumentNullException>(() => el.UpdateOutputConnectionsQuota(null));
@@ -168,7 +168,7 @@ namespace ProcessChainTest
         public void UpdateOutputConnectionsQuota()
         {
             #region Test data
-            InputsOutputsElement el = new InputsOutputsElement("1", new FlowElementScope(300),
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(300),
                 FlowRateDistributionStrategy.MaxByQuotes);
             FlowElementMock elM1 = new FlowElementMock();
             FlowElementMock elM2 = new FlowElementMock();
@@ -176,17 +176,17 @@ namespace ProcessChainTest
             FlowElementMock elM4 = new FlowElementMock();
             FlowElementMock elM5 = new FlowElementMock();
 
-            var inputConn = new List<FlowConnection>()
+            var inputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c1", new FlowConnectionQuota(50), elM1, el, 20),
-                new FlowConnection("c2", new FlowConnectionQuota(50), elM2, el, 80)
+                new NodeConnection("c1", new NodeConnectionQuota(50), elM1, el, 20),
+                new NodeConnection("c2", new NodeConnectionQuota(50), elM2, el, 80)
             };
 
-            var outputConn = new List<FlowConnection>()
+            var outputConn = new List<NodeConnection>()
             {
-                new FlowConnection("c3", new FlowConnectionQuota(20, 50), el, elM3, 30),
-                new FlowConnection("c4", new FlowConnectionQuota(21.1), el, elM4, 30),
-                new FlowConnection("c5", new FlowConnectionQuota(78.9), el, elM5, 30)
+                new NodeConnection("c3", new NodeConnectionQuota(20, 50), el, elM3, 30),
+                new NodeConnection("c4", new NodeConnectionQuota(21.1), el, elM4, 30),
+                new NodeConnection("c5", new NodeConnectionQuota(78.9), el, elM5, 30)
             };
 
             elM3.Connection = outputConn[0];
@@ -199,10 +199,10 @@ namespace ProcessChainTest
 
             var result = el.UpdateFlowRates();
 
-            Dictionary<string, FlowConnectionQuota> newQutas = new Dictionary<string, FlowConnectionQuota>();
-            newQutas.Add("c3", new FlowConnectionQuota(10));
-            newQutas.Add("c4", new FlowConnectionQuota(30));
-            newQutas.Add("c5", new FlowConnectionQuota(60, 60));
+            Dictionary<string, NodeConnectionQuota> newQutas = new Dictionary<string, NodeConnectionQuota>();
+            newQutas.Add("c3", new NodeConnectionQuota(10));
+            newQutas.Add("c4", new NodeConnectionQuota(30));
+            newQutas.Add("c5", new NodeConnectionQuota(60, 60));
 
             result = el.UpdateOutputConnectionsQuota(newQutas);
 

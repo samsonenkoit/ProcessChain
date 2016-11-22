@@ -16,7 +16,7 @@ namespace ProcessChain
         /// <param name="input"></param>
         /// <param name="output"></param>
         /// <returns></returns>
-        public static IDictionary<string,double> MaxByQuotes(IEnumerable<FlowConnection> input, IEnumerable<FlowConnection> output)
+        public static IDictionary<string,double> MaxByQuotes(IEnumerable<NodeConnection> input, IEnumerable<NodeConnection> output)
         {
             if (input == null || !input.Any()) throw new ArgumentOutOfRangeException(nameof(input));
             if (output == null || !output.Any()) throw new ArgumentOutOfRangeException(nameof(output));

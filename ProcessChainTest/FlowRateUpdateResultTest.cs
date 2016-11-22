@@ -15,14 +15,14 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorTest()
         {
-            var result = new FlowRateUpdateResult();
+            var result = new SchemeRateUpdateResult();
 
             Assert.AreEqual(result.IsSuccess, true);
             Assert.AreEqual(result.Restriction, null);
 
-            var restriction = new FlowRestriction(FlowRestrictionTypes.FlowRateValueMaximum, new FlowElementMock(), 1);
+            var restriction = new SchemeRestriction(FlowRestrictionTypes.FlowRateValueMaximum, new FlowElementMock(), 1);
 
-            result = new FlowRateUpdateResult(restriction);
+            result = new SchemeRateUpdateResult(restriction);
 
             Assert.AreEqual(result.IsSuccess, false);
             Assert.AreEqual(result.Restriction, restriction);

@@ -14,20 +14,20 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorValidationTest()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => { new FlowConnectionQuota(-1, 1); });
-            Assert.Throws<ArgumentOutOfRangeException>(() => { new FlowConnectionQuota(1, -1); });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { new NodeConnectionQuota(-1, 1); });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { new NodeConnectionQuota(1, -1); });
         }
 
         [Test]
         public void ConstructorTest()
         {
-            var quota = new FlowConnectionQuota(12.2d);
+            var quota = new NodeConnectionQuota(12.2d);
 
             Assert.AreEqual(quota.Percent, 12.2d);
-            Assert.AreEqual(quota.DirectValue, FlowConnectionQuota.DirectValueNone);
+            Assert.AreEqual(quota.DirectValue, NodeConnectionQuota.DirectValueNone);
             Assert.AreEqual(quota.IsDirectValue, false);
 
-            quota = new FlowConnectionQuota(1.1d, 3.2d);
+            quota = new NodeConnectionQuota(1.1d, 3.2d);
 
             Assert.AreEqual(quota.DirectValue, 3.2d);
             Assert.AreEqual(quota.IsDirectValue, true);

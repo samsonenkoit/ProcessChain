@@ -20,7 +20,7 @@ namespace ProcessChainTest
             Assert.Throws<ArgumentNullException>(() => { ext.SetOutputConnection(null); });
 
             FlowElementMock flowEl = new FlowElementMock();
-            FlowConnection conn = new FlowConnection("c1", new FlowConnectionQuota(0), ext, flowEl);
+            NodeConnection conn = new NodeConnection("c1", new NodeConnectionQuota(0), ext, flowEl);
 
             Assert.DoesNotThrow(() => ext.SetOutputConnection(conn));
             Assert.Throws<InvalidOperationException>(() => ext.SetOutputConnection(conn));
@@ -40,7 +40,7 @@ namespace ProcessChainTest
             Extractor ext = new Extractor("1");
             FlowElementMock flEl = new FlowElementMock("2");
 
-            FlowConnection conn = new FlowConnection("c1", new FlowConnectionQuota(1), ext, flEl);
+            NodeConnection conn = new NodeConnection("c1", new NodeConnectionQuota(1), ext, flEl);
             ext.SetOutputConnection(conn);
             flEl.Connection = conn;
 

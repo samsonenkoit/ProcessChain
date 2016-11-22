@@ -18,9 +18,9 @@ namespace ProcessChainTest
             var consumer = new Consumer("1");
             Assert.Throws<ArgumentNullException>(() => consumer.SetInputConnections(null));
 
-            consumer.SetInputConnections(new List<FlowConnection>());
+            consumer.SetInputConnections(new List<NodeConnection>());
 
-            Assert.Throws<InvalidOperationException>(() => consumer.SetInputConnections(new List<FlowConnection>()));
+            Assert.Throws<InvalidOperationException>(() => consumer.SetInputConnections(new List<NodeConnection>()));
         }
 
         [Test]
@@ -28,11 +28,11 @@ namespace ProcessChainTest
         {
             var consumer = new Consumer("1");
 
-            List<FlowConnection> input = new List<FlowConnection>()
+            List<NodeConnection> input = new List<NodeConnection>()
             {
-                new FlowConnection("c1", new FlowConnectionQuota(1), new FlowElementMock(), consumer, 1.10d),
-                new FlowConnection("c2", new FlowConnectionQuota(1), new FlowElementMock(), consumer, 1.20d),
-                new FlowConnection("c3", new FlowConnectionQuota(1), new FlowElementMock(), consumer, 1.30d)
+                new NodeConnection("c1", new NodeConnectionQuota(1), new FlowElementMock(), consumer, 1.10d),
+                new NodeConnection("c2", new NodeConnectionQuota(1), new FlowElementMock(), consumer, 1.20d),
+                new NodeConnection("c3", new NodeConnectionQuota(1), new FlowElementMock(), consumer, 1.30d)
             };
 
             consumer.SetInputConnections(input);

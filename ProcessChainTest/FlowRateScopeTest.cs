@@ -14,9 +14,9 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorTest()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => { new FlowElementScope(-1); });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { new NodeScope(-1); });
 
-            FlowElementScope scope = new FlowElementScope(12.0d);
+            NodeScope scope = new NodeScope(12.0d);
             Assert.AreEqual(scope.RateValueMax, 12.0d);
         }
     }

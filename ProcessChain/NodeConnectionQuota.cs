@@ -9,7 +9,7 @@ namespace ProcessChain
     /// <summary>
     /// Параметры соединения
     /// </summary>
-    public class FlowConnectionQuota
+    public class NodeConnectionQuota
     {
         #region Const
 
@@ -33,16 +33,16 @@ namespace ProcessChain
         {
             get
             {
-                return DirectValue != FlowConnectionQuota.DirectValueNone;
+                return DirectValue != NodeConnectionQuota.DirectValueNone;
             }
         }
 
-        public FlowConnectionQuota(double percent): this(percent, FlowConnectionQuota.DirectValueNone)
+        public NodeConnectionQuota(double percent): this(percent, NodeConnectionQuota.DirectValueNone)
         {
 
         }
 
-        public FlowConnectionQuota(double percent, double directValue)
+        public NodeConnectionQuota(double percent, double directValue)
         {
             if (percent < 0.0d) throw new ArgumentOutOfRangeException(nameof(percent));
             if (directValue < 0.0d) throw new ArgumentOutOfRangeException(nameof(directValue));

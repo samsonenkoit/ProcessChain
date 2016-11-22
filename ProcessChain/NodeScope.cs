@@ -9,14 +9,14 @@ namespace ProcessChain
     /// <summary>
     /// Параметры узла
     /// </summary>
-    public class FlowElementScope
+    public class NodeScope
     {
         /// <summary>
         /// Максимально возможный размер потока
         /// </summary>
         public double RateValueMax { get; private set; }
 
-        public FlowElementScope(double rateValueMax)
+        public NodeScope(double rateValueMax)
         {
             if (rateValueMax <= 0.0d) throw new ArgumentOutOfRangeException(nameof(rateValueMax));
 

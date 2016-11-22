@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessChain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,18 +12,18 @@ namespace ProcessChain
     /// <summary>
     /// Основной тип усзлов схемы, может содержать как входные, так и выходные соединения
     /// </summary>
-    public class InputsOutputsElement : FlowElement
+    public class InputsOutputsElement : NodeElement
     {
-        private readonly FlowElementScope _scope;
-        private readonly Func<IEnumerable<FlowConnection>, IEnumerable<FlowConnection>, IDictionary<string, double>> _distributionStrategy;
+        private readonly NodeScope _scope;
+        private readonly Func<IEnumerable<NodeConnection>, IEnumerable<NodeConnection>, IDictionary<string, double>> _distributionStrategy;
 
-        private Dictionary<string, FlowConnection> _inputConnections;
-        private Dictionary<string, FlowConnection> _outputConnections;
+        private Dictionary<string, NodeConnection> _inputConnections;
+        private Dictionary<string, NodeConnection> _outputConnections;
 
         /// <summary>
         /// Ограничение узла
         /// </summary>
-        public FlowElementScope Scope
+        public NodeScope Scope
         {
             get { return _scope; }
         }
@@ -38,8 +39,8 @@ namespace ProcessChain
             }
         }
 
-        internal InputsOutputsElement(string id, FlowElementScope scope,
-            Func<IEnumerable<FlowConnection>, IEnumerable<FlowConnection>, IDictionary<string, double>> distributionStrategy) : base(id)
+        internal InputsOutputsElement(string id, NodeScope scope,
+            Func<IEnumerable<NodeConnection>, IEnumerable<NodeConnection>, IDictionary<string, double>> distributionStrategy) : base(id)
         {
             if (distributionStrategy == null) throw new ArgumentNullException(nameof(distributionStrategy));
             if (scope == null) throw new ArgumentNullException(nameof(scope));
@@ -53,17 +54,17 @@ namespace ProcessChain
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
-        internal void SetConnections(IEnumerable<FlowConnection> inputs, IEnumerable<FlowConnection> outputs)
+        internal void SetConnections(IEnumerable<NodeConnection> inputs, IEnumerable<NodeConnection> outputs)
         {
             if (_inputConnections != null) throw new InvalidOperationException();
             if (inputs == null) throw new ArgumentNullException(nameof(inputs));
             if (outputs == null) throw new ArgumentNullException(nameof(outputs));
 
-            _inputConnections = new Dictionary<string, FlowConnection>();
+            _inputConnections = new Dictionary<string, NodeConnection>();
             foreach (var input in inputs)
                 _inputConnections.Add(input.Id, input);
 
-            _outputConnections = new Dictionary<string, FlowConnection>();
+            _outputConnections = new Dictionary<string, NodeConnection>();
             foreach (var output in outputs)
                 _outputConnections.Add(output.Id, output);
 
@@ -74,7 +75,7 @@ namespace ProcessChain
         /// </summary>
         /// <param name="quotas"></param>
         /// <returns></returns>
-        public FlowRateUpdateResult UpdateOutputConnectionsQuota(IDictionary<string, FlowConnectionQuota> quotas)
+        public SchemeRateUpdateResult UpdateOutputConnectionsQuota(IDictionary<string, NodeConnectionQuota> quotas)
         {
             if (quotas == null) throw new ArgumentNullException();
 
@@ -88,20 +89,20 @@ namespace ProcessChain
             return UpdateFlowRates();
         }
 
-        internal override FlowRateUpdateResult UpdateFlowRates()
+        internal override SchemeRateUpdateResult UpdateFlowRates()
         {            
             double inputFlowRate = _inputConnections.Values.Sum(t => t.CurrentRate);
 
             //проверяем что входной поток в рамках допустимого
             if (inputFlowRate > _scope.RateValueMax)
-                return new FlowRateUpdateResult(new FlowRestriction(FlowRestrictionTypes.FlowRateValueMaximum,
+                return new SchemeRateUpdateResult(new SchemeRestriction(FlowRestrictionTypes.FlowRateValueMaximum,
                     this, inputFlowRate - _scope.RateValueMax));
 
             double minOutputFlowRate = _outputConnections.Values.Where(t => t.Quota.IsDirectValue).Sum(t => t.Quota.DirectValue);
 
             //проверяем что входной поток >= чем выходной
             if (inputFlowRate < minOutputFlowRate)
-                return new FlowRateUpdateResult(new FlowRestriction(FlowRestrictionTypes.InputFlowNotEqualOutput,
+                return new SchemeRateUpdateResult(new SchemeRestriction(FlowRestrictionTypes.InputFlowNotEqualOutput,
                     this, minOutputFlowRate - inputFlowRate));
 
             //считаем новые выходные потоки
@@ -116,7 +117,7 @@ namespace ProcessChain
                     return result;
             }
 
-            return new FlowRateUpdateResult();
+            return new SchemeRateUpdateResult();
         }
         
     }

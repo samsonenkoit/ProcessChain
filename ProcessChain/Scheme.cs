@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessChain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,13 +37,14 @@ namespace ProcessChain
         /// Хранилища
         /// </summary>
         public Dictionary<string, Consumer> Consumers { get; private set; }
+
         /// <summary>
         /// Соединения
         /// </summary>
-        public Dictionary<string, FlowConnection> Connections { get; private set; }
+        internal Dictionary<string, NodeConnection> Connections { get; set; }
 
         internal Scheme(Dictionary<string, Extractor> extractors, Dictionary<string, InputsOutputsElement> installations, 
-            Dictionary<string, Consumer> consumers, Dictionary<string, FlowConnection> connections)
+            Dictionary<string, Consumer> consumers, Dictionary<string, NodeConnection> connections)
         {
             if (extractors == null) throw new ArgumentNullException(nameof(extractors));
             if (installations == null) throw new ArgumentNullException(nameof(installations));
@@ -59,9 +61,9 @@ namespace ProcessChain
         /// Возвращает все узлы.
         /// </summary>
         /// <returns></returns>
-        public IList<FlowElement> GetAllNodes()
+        public IList<NodeElement> GetAllNodes()
         {
-            List<FlowElement> nodes = new List<FlowElement>();
+            List<NodeElement> nodes = new List<NodeElement>();
             nodes.AddRange(Extractors.Select(t => t.Value));
             nodes.AddRange(Installations.Select(t => t.Value));
             nodes.AddRange(Consumers.Select(t => t.Value));

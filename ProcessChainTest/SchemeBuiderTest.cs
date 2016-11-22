@@ -26,14 +26,14 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null)
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
-                new ConnectionInfo("c3", "n5", "n3", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2)),
+                new ConnectionInfo("c3", "n5", "n3", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -45,13 +45,13 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null)
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n5", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n5", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -63,14 +63,14 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null),
                 new NodeInfo("n5", NodeType.Consumer, null)
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -82,14 +82,14 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null),
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
-                new ConnectionInfo("c3", "n2", "n1", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2)),
+                new ConnectionInfo("c3", "n2", "n1", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -101,14 +101,14 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null),
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
-                new ConnectionInfo("c3", "n3", "n2", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2)),
+                new ConnectionInfo("c3", "n3", "n2", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -120,15 +120,15 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
-                new NodeInfo("n5", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
+                new NodeInfo("n5", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null),
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
-                new ConnectionInfo("c3", "n5", "n3", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2)),
+                new ConnectionInfo("c3", "n5", "n3", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -140,15 +140,15 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
-                new NodeInfo("n5", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
+                new NodeInfo("n5", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null),
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2)),
-                new ConnectionInfo("c3", "n2", "n5", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2)),
+                new ConnectionInfo("c3", "n2", "n5", new NodeConnectionQuota(2))
             };
 
             Assert.Throws<InvalidOperationException>(() => SchemeBuilder.Build(nodes, conns));
@@ -160,13 +160,13 @@ namespace ProcessChainTest
             List<NodeInfo> nodes = new List<NodeInfo>()
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
-                new NodeInfo("n2", NodeType.Installation, new FlowElementScope(10)),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(10)),
                 new NodeInfo("n3", NodeType.Consumer, null)
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n2", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n2", "n3", new FlowConnectionQuota(2))
+                new ConnectionInfo("c1", "n1", "n2", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n2", "n3", new NodeConnectionQuota(2))
             };
 
             var scheme = SchemeBuilder.Build(nodes, conns);
@@ -181,23 +181,23 @@ namespace ProcessChainTest
             {
                 new NodeInfo("n1", NodeType.Extractor, null),
                 new NodeInfo("n2", NodeType.Extractor, null),
-                new NodeInfo("n3", NodeType.Installation, new FlowElementScope(10)),
-                new NodeInfo("n4", NodeType.Installation, new FlowElementScope(11)),
-                new NodeInfo("n5", NodeType.Installation, new FlowElementScope(12)),
-                new NodeInfo("n6", NodeType.Installation, new FlowElementScope(13.1)),
+                new NodeInfo("n3", NodeType.Installation, new NodeScope(10)),
+                new NodeInfo("n4", NodeType.Installation, new NodeScope(11)),
+                new NodeInfo("n5", NodeType.Installation, new NodeScope(12)),
+                new NodeInfo("n6", NodeType.Installation, new NodeScope(13.1)),
                 new NodeInfo("n7", NodeType.Consumer, null)
             };
             List<ConnectionInfo> conns = new List<ConnectionInfo>()
             {
-                new ConnectionInfo("c1", "n1", "n3", new FlowConnectionQuota(1)),
-                new ConnectionInfo("c2", "n1", "n4", new FlowConnectionQuota(2)),
-                new ConnectionInfo("c3", "n2", "n5", new FlowConnectionQuota(3)),
-                new ConnectionInfo("c4", "n2", "n6", new FlowConnectionQuota(4)),
+                new ConnectionInfo("c1", "n1", "n3", new NodeConnectionQuota(1)),
+                new ConnectionInfo("c2", "n1", "n4", new NodeConnectionQuota(2)),
+                new ConnectionInfo("c3", "n2", "n5", new NodeConnectionQuota(3)),
+                new ConnectionInfo("c4", "n2", "n6", new NodeConnectionQuota(4)),
 
-                new ConnectionInfo("c5", "n3", "n7", new FlowConnectionQuota(4)),
-                new ConnectionInfo("c6", "n4", "n7", new FlowConnectionQuota(4)),
-                new ConnectionInfo("c7", "n5", "n7", new FlowConnectionQuota(4)),
-                new ConnectionInfo("c8", "n6", "n7", new FlowConnectionQuota(4)),
+                new ConnectionInfo("c5", "n3", "n7", new NodeConnectionQuota(4)),
+                new ConnectionInfo("c6", "n4", "n7", new NodeConnectionQuota(4)),
+                new ConnectionInfo("c7", "n5", "n7", new NodeConnectionQuota(4)),
+                new ConnectionInfo("c8", "n6", "n7", new NodeConnectionQuota(4)),
             };
 
             var scheme = SchemeBuilder.Build(nodes, conns);

@@ -15,10 +15,10 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorTest()
         {
-            var quota = new FlowConnectionQuota(1);
+            var quota = new NodeConnectionQuota(1);
             var input = new FlowElementMock("1");
             var output = new FlowElementMock("2");
-            FlowConnection con = new FlowConnection("123", quota, input, output, 12);
+            NodeConnection con = new NodeConnection("123", quota, input, output, 12);
 
             Assert.AreEqual(con.Id, "123");
             Assert.AreEqual(con.Quota, quota);
@@ -30,14 +30,14 @@ namespace ProcessChainTest
         [Test]
         public void ConstructorParameterValidationTest()
         {
-            Assert.Throws<ArgumentNullException>(delegate { new FlowConnection("1", null, null, null); });
+            Assert.Throws<ArgumentNullException>(delegate { new NodeConnection("1", null, null, null); });
         }
 
         [Test]
         public void FlowRateUpdateTest()
         {
             var output = new FlowElementMock("2");
-            FlowConnection conn = new FlowConnection("1", new FlowConnectionQuota(12), new FlowElementMock("1"), output);
+            NodeConnection conn = new NodeConnection("1", new NodeConnectionQuota(12), new FlowElementMock("1"), output);
             output.Connection = conn;
             conn.FlowRateUpdate(134);
 

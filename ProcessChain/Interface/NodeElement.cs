@@ -1,25 +1,26 @@
-﻿using System;
+﻿using ProcessChain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProcessChain
+namespace ProcessChain.Interface
 {
     /// <summary>
     /// Базовый класс для узла схемы
     /// </summary>
-    public abstract class FlowElement: Element
+    public abstract class NodeElement: Element
     {
         /// <summary>
         /// Величина потока узла
         /// </summary>
         public abstract double FlowRate { get;  }
 
-        public FlowElement(string id): base(id)
+        public NodeElement(string id): base(id)
         {
         }
         
-        internal abstract FlowRateUpdateResult UpdateFlowRates();
+        internal abstract SchemeRateUpdateResult UpdateFlowRates();
     }
 }

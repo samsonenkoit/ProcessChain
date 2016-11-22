@@ -7,11 +7,11 @@
       <FileName>Consumer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.Element" Collapsed="true">
+  <Class Name="ProcessChain.Interface.Element" Collapsed="true">
     <Position X="3.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Element.cs</FileName>
+      <FileName>Interface\Element.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProcessChain.Extractor" Collapsed="true">
@@ -21,25 +21,25 @@
       <FileName>Extractor.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.FlowConnection" Collapsed="true">
+  <Class Name="ProcessChain.NodeConnection" Collapsed="true">
     <Position X="7.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAIAAAAEEACAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>FlowConnection.cs</FileName>
+      <FileName>NodeConnection.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.FlowConnectionQuota" Collapsed="true">
+  <Class Name="ProcessChain.NodeConnectionQuota" Collapsed="true">
     <Position X="12.5" Y="3.25" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAABAAAAAAAAAAgAACAQAAAA=</HashCode>
-      <FileName>FlowConnectionQuota.cs</FileName>
+      <FileName>NodeConnectionQuota.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.FlowElement" Collapsed="true">
+  <Class Name="ProcessChain.Interface.NodeElement" Collapsed="true">
     <Position X="2.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>FlowElement.cs</FileName>
+      <FileName>Interface\NodeElement.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProcessChain.FlowRateDistributionStrategy" Collapsed="true">
@@ -49,25 +49,25 @@
       <FileName>FlowRateDistributionStrategy.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.FlowElementScope" Collapsed="true">
+  <Class Name="ProcessChain.NodeScope" Collapsed="true">
     <Position X="14" Y="0.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>FlowElementScope.cs</FileName>
+      <FileName>NodeScope.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.FlowRateUpdateResult" Collapsed="true">
+  <Class Name="ProcessChain.SchemeRateUpdateResult" Collapsed="true">
     <Position X="9.75" Y="1.5" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
-      <FileName>FlowRateUpdateResult.cs</FileName>
+      <FileName>SchemeRateUpdateResult.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ProcessChain.FlowRestriction" Collapsed="true">
+  <Class Name="ProcessChain.SchemeRestriction" Collapsed="true">
     <Position X="13.5" Y="1.5" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAAAAAEAAgAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>FlowRestriction.cs</FileName>
+      <FileName>SchemeRestriction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProcessChain.InputsOutputsElement" Collapsed="true">
@@ -81,7 +81,7 @@
     <Position X="9.5" Y="4.25" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>FlowRestriction.cs</FileName>
+      <FileName>SchemeRestriction.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
