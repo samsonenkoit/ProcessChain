@@ -41,7 +41,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void WorkTest1()
+        public void Scheme1WorkTest()
         {
             #region Data
             List<NodeInfo> nodes = new List<NodeInfo>()
@@ -89,7 +89,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void WorkTest2()
+        public void Scheme2WorkTest()
         {
             #region Data
 
@@ -178,6 +178,102 @@ namespace ProcessChainTest
 
         }
 
+        [Test]
+        public void Scheme3WorkTest()
+        {
+            #region Data
 
+            List<NodeInfo> nodes = new List<NodeInfo>()
+            {
+                new NodeInfo("n1", NodeType.Extractor, null),
+                new NodeInfo("n2", NodeType.Installation, new NodeScope(100)),
+                new NodeInfo("n3", NodeType.Consumer, null),
+                new NodeInfo("n4", NodeType.Consumer, null)
+            };
+
+            List<ConnectionInfo> connections = new List<ConnectionInfo>()
+            {
+                new ConnectionInfo("n1n2", "n1", "n2", new NodeConnectionQuota(100)),
+                new ConnectionInfo("n2n3", "n2", "n3", new NodeConnectionQuota(20)),
+                new ConnectionInfo("n2n4", "n2", "n4", new NodeConnectionQuota(80))
+            };
+
+            var scheme = SchemeBuilder.Build(nodes, connections);
+
+            #endregion
+
+            #region Step 1
+
+            var result = scheme.Extractors["n1"].FlowRateUpdate(105);
+
+            Assert.AreEqual(result.IsSuccess, false);
+            Assert.AreEqual(result.Restriction.RestrictionValue, 5);
+
+            #endregion
+
+            #region Step 2 
+
+            result = scheme.Extractors["n1"].FlowRateUpdate(50);
+
+            Assert.AreEqual(result.IsSuccess, true);
+            Assert.AreEqual(scheme.Installations["n2"].FlowRate, 50);
+            Assert.AreEqual(scheme.Consumers["n3"].FlowRate, 10);
+            Assert.AreEqual(scheme.Consumers["n4"].FlowRate, 40);
+
+            #endregion
+
+            #region Step 3
+
+            var newQuota = new Dictionary<string, NodeConnectionQuota>();
+            newQuota.Add("n2n3", new NodeConnectionQuota(50));
+            newQuota.Add("n2n4", new NodeConnectionQuota(50));
+
+            result = scheme.Installations["n2"].UpdateOutputConnectionsQuota(newQuota);
+
+            Assert.AreEqual(result.IsSuccess, true);
+            Assert.AreEqual(scheme.Consumers["n4"].FlowRate, 25);
+
+            #endregion
+
+            #region Step 4
+
+            newQuota = new Dictionary<string, NodeConnectionQuota>();
+            newQuota.Add("n2n3", new NodeConnectionQuota(100));
+            newQuota.Add("n2n4", new NodeConnectionQuota(0));
+
+            result = scheme.Installations["n2"].UpdateOutputConnectionsQuota(newQuota);
+
+            Assert.AreEqual(result.IsSuccess, true);
+            Assert.AreEqual(scheme.Consumers["n3"].FlowRate, 50);
+            Assert.AreEqual(scheme.Consumers["n4"].FlowRate, 0);
+
+            #endregion
+
+            #region Step 5
+
+            newQuota = new Dictionary<string, NodeConnectionQuota>();
+            newQuota.Add("n2n4", new NodeConnectionQuota(0, 1));
+
+            result = scheme.Installations["n2"].UpdateOutputConnectionsQuota(newQuota);
+
+            Assert.AreEqual(result.IsSuccess, true);
+            Assert.AreEqual(scheme.Consumers["n3"].FlowRate, 49);
+            Assert.AreEqual(scheme.Consumers["n4"].FlowRate, 1);
+
+            #endregion
+
+            #region Step 6
+
+            newQuota = new Dictionary<string, NodeConnectionQuota>();
+            newQuota.Add("n2n3", new NodeConnectionQuota(100, 51));
+
+            result = scheme.Installations["n2"].UpdateOutputConnectionsQuota(newQuota);
+
+            Assert.AreEqual(result.IsSuccess, false);
+            Assert.AreEqual(result.Restriction.Type, FlowRestrictionTypes.InputFlowNotEqualOutput);
+            Assert.AreEqual(result.Restriction.RestrictionValue, 2);
+             
+            #endregion
+        }
     }
 }

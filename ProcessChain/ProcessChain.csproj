@@ -44,6 +44,7 @@
     <Compile Include="Builder\NodeInfo.cs" />
     <Compile Include="Builder\SchemeBuilder.cs" />
     <Compile Include="Consumer.cs" />
+    <Compile Include="Extension\DoubleExtension.cs" />
     <Compile Include="Interface\Element.cs" />
     <Compile Include="Extension\DictionaryExtension.cs" />
     <Compile Include="Extractor.cs" />
