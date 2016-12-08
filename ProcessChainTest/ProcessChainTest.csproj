@@ -70,7 +70,7 @@
     <Compile Include="FlowRateUpdateResultTest.cs" />
     <Compile Include="FlowRestrictionTest.cs" />
     <Compile Include="InputsOutputsElementTest.cs" />
-    <Compile Include="Mock\FlowElementMock.cs" />
+    <Compile Include="Mock\FakeFlowElement.cs" />
     <Compile Include="NodeInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeBuiderTest.cs" />

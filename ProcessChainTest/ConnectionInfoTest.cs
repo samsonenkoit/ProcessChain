@@ -12,17 +12,18 @@ namespace ProcessChainTest
     [TestFixture]
     public class ConnectionInfoTest
     {
-        [Test]
-        public void ConstructorParameterValidationTest()
+
+
+        [TestCase(typeof(ArgumentOutOfRangeException), "", "1", "2", 12)]
+        [TestCase(typeof(ArgumentOutOfRangeException), "1", "", "2", 12)]
+        [TestCase(typeof(ArgumentOutOfRangeException), "1", "3", "", 12)]
+        public void Constructor_IncorrectParameters_Throw(Type exceptionType, string id, string startNodeId, string endNodeId, double quota)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ConnectionInfo("", "1", "2", new NodeConnectionQuota(12)));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ConnectionInfo("1", "", "2", new NodeConnectionQuota(12)));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ConnectionInfo("1", "3", "", new NodeConnectionQuota(12)));
-            Assert.Throws<ArgumentNullException>(() => new ConnectionInfo("1", "3", "4", null));
+            Assert.Throws(exceptionType,() => new ConnectionInfo(id, startNodeId, endNodeId, new NodeConnectionQuota(quota)));
         }
 
         [Test]
-        public void ConstructorTest()
+        public void Constructor_CorrectParameters_Success()
         {
             var quota = new NodeConnectionQuota(12);
             var connInfo = new ConnectionInfo("1", "2", "3", quota);

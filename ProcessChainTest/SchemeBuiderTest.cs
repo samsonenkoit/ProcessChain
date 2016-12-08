@@ -13,7 +13,7 @@ namespace ProcessChainTest
     class SchemeBuiderTest
     {
         [Test]
-        public void BuildBaseParameterValidaTionTest()
+        public void Build_InvalidParameters_Throw()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => SchemeBuilder.Build(null, null));
             Assert.Throws<ArgumentOutOfRangeException>(() => SchemeBuilder.Build(new List<NodeInfo>(), new List<ConnectionInfo>()));

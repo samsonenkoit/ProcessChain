@@ -12,45 +12,55 @@ namespace ProcessChainTest
     [TestFixture]
     public class ExtractorTest
     {
-        [Test]
-        public void SetOutputConnectionTest()
+        private Extractor GetDefaulteExtractor()
         {
-            Extractor ext = new Extractor("1");
+            return new Extractor("1");
+        }
+
+        [Test]
+        public void SetOutputConnection_NullParameter_Throw()
+        {
+            Extractor ext = GetDefaulteExtractor();
 
             Assert.Throws<ArgumentNullException>(() => { ext.SetOutputConnection(null); });
+        }
 
-            FlowElementMock flowEl = new FlowElementMock();
+        [Test]
+        public void SetOutputConnection_SecondSet_Throw()
+        {
+            Extractor ext = GetDefaulteExtractor();
+
+            FakeFlowElement flowEl = new FakeFlowElement();
             NodeConnection conn = new NodeConnection("c1", new NodeConnectionQuota(0), ext, flowEl);
 
-            Assert.DoesNotThrow(() => ext.SetOutputConnection(conn));
+            ext.SetOutputConnection(conn);
             Assert.Throws<InvalidOperationException>(() => ext.SetOutputConnection(conn));
         }
 
         [Test]
-        public void UpdateFlowRateParameterValidationTest()
+        public void UpdateFlowRateParameter_InvalidParamater_Throw()
         {
-            Extractor ext = new Extractor("1");
+            Extractor ext = GetDefaulteExtractor();
 
             Assert.Throws<ArgumentOutOfRangeException>(() => ext.FlowRateUpdate(-1));
         }
 
-        [Test]
-        public void UpdateFlowRateTest()
+        [TestCase(10.1d)]
+        [TestCase(1.2d)]
+        [TestCase(5.3d)]
+        public void FlowRateUpdate_UpdateOutputConnectionFlowRate_Success(double newFlowRate)
         {
-            Extractor ext = new Extractor("1");
-            FlowElementMock flEl = new FlowElementMock("2");
+            Extractor ext = GetDefaulteExtractor();
+            FakeFlowElement stubFlowEl = new FakeFlowElement("2");
 
-            NodeConnection conn = new NodeConnection("c1", new NodeConnectionQuota(1), ext, flEl);
-            ext.SetOutputConnection(conn);
-            flEl.Connection = conn;
+            NodeConnection mockConn = new NodeConnection("c1", new NodeConnectionQuota(1), ext, stubFlowEl);
+            ext.SetOutputConnection(mockConn);
+            stubFlowEl.Connection = mockConn;
 
-            var result = ext.FlowRateUpdate(10.1d);
+            var result = ext.FlowRateUpdate(newFlowRate);
             Assert.AreEqual(result.IsSuccess, true);
-            Assert.AreEqual(ext.FlowRate, 10.1d);
-            Assert.AreEqual(flEl.InputFlowRate["c1"], 10.1d);
-
-            ext.FlowRateUpdate(1.2d);
-            Assert.AreEqual(flEl.InputFlowRate["c1"], 1.2d);
+            Assert.AreEqual(ext.FlowRate, newFlowRate);
+            Assert.AreEqual(stubFlowEl.InputFlowRate["c1"], newFlowRate);
         }
     }
 }

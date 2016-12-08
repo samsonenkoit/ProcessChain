@@ -11,15 +11,15 @@ namespace ProcessChainTest
     [TestFixture]
     public class FlowConnectionQuotaTest
     {
-        [Test]
-        public void ConstructorValidationTest()
+        [TestCase(typeof(ArgumentOutOfRangeException), -1, 1)]
+        [TestCase(typeof(ArgumentOutOfRangeException), 1, -1)]
+        public void Constructor_InvalidParameters_Throw(Type exceptionType, double percent, double directValue )
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => { new NodeConnectionQuota(-1, 1); });
-            Assert.Throws<ArgumentOutOfRangeException>(() => { new NodeConnectionQuota(1, -1); });
+            Assert.Throws(exceptionType, () => { new NodeConnectionQuota(percent, directValue); });
         }
 
         [Test]
-        public void ConstructorTest()
+        public void Constructor_OneParameter_Success()
         {
             var quota = new NodeConnectionQuota(12.2d);
 
@@ -27,11 +27,17 @@ namespace ProcessChainTest
             Assert.AreEqual(quota.DirectValue, NodeConnectionQuota.DirectValueNone);
             Assert.AreEqual(quota.IsDirectValue, false);
 
-            quota = new NodeConnectionQuota(1.1d, 3.2d);
+            
+
+        }
+
+        [Test]
+        public void Constructor_TwoParameters_Success()
+        {
+            var quota = new NodeConnectionQuota(1.1d, 3.2d);
 
             Assert.AreEqual(quota.DirectValue, 3.2d);
             Assert.AreEqual(quota.IsDirectValue, true);
-
-        } 
+        }
     }
 }

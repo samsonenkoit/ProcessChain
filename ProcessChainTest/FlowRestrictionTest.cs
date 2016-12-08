@@ -13,15 +13,15 @@ namespace ProcessChainTest
     public class FlowRestrictionTest
     {
         [Test]
-        public void ConstructorParameterValidationTest()
+        public void Constructor_InvalidParameters_Throw()
         {
             Assert.Throws<ArgumentNullException>(() => { new SchemeRestriction(FlowRestrictionTypes.FlowRateValueMaximum, null, 12); });
         }
 
         [Test]
-        public void ConstructorTest()
+        public void Constructor_ValidParameters_Success()
         {
-            FlowElementMock flM = new FlowElementMock();
+            FakeFlowElement flM = new FakeFlowElement();
 
             SchemeRestriction rest = new SchemeRestriction(FlowRestrictionTypes.InputFlowNotEqualOutput, flM, 15.1d);
 

@@ -12,11 +12,25 @@ namespace ProcessChainTest
     [TestFixture]
     public class ConsumerTest
     {
-        [Test]
-        public void SerInputConnectionsTest()
+        private Consumer GetDefaulteConsumer()
         {
-            var consumer = new Consumer("1");
+            return new Consumer("1");
+        }
+
+        [Test]
+        public void SetInputConnections_NullParameter_Throw()
+        {
+            var consumer = GetDefaulteConsumer();
+
             Assert.Throws<ArgumentNullException>(() => consumer.SetInputConnections(null));
+
+        }
+
+
+        [Test]
+        public void SetInputConnections_SecondConnectionsSet_Throw()
+        {
+            var consumer = GetDefaulteConsumer();
 
             consumer.SetInputConnections(new List<NodeConnection>());
 
@@ -24,20 +38,20 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void UpdateFlowRateTest()
+        public void FlowRateUpdate_ConsumerUpdateFlowRate_Success()
         {
-            var consumer = new Consumer("1");
+            var consumer = GetDefaulteConsumer();
 
-            List<NodeConnection> input = new List<NodeConnection>()
+            List<NodeConnection> stubInputConnections = new List<NodeConnection>()
             {
-                new NodeConnection("c1", new NodeConnectionQuota(1), new FlowElementMock(), consumer, 1.10d),
-                new NodeConnection("c2", new NodeConnectionQuota(1), new FlowElementMock(), consumer, 1.20d),
-                new NodeConnection("c3", new NodeConnectionQuota(1), new FlowElementMock(), consumer, 1.30d)
+                new NodeConnection("c1", new NodeConnectionQuota(1), new FakeFlowElement(), consumer, 1.10d),
+                new NodeConnection("c2", new NodeConnectionQuota(1), new FakeFlowElement(), consumer, 1.20d),
+                new NodeConnection("c3", new NodeConnectionQuota(1), new FakeFlowElement(), consumer, 1.30d)
             };
 
-            consumer.SetInputConnections(input);
+            consumer.SetInputConnections(stubInputConnections);
 
-            var result = input[0].FlowRateUpdate(1.10d);
+            var result = stubInputConnections[0].FlowRateUpdate(1.10d);
 
             Assert.AreEqual(result.IsSuccess, true);
             Assert.AreEqual(consumer.FlowRate - 3.60d < 0.00001d, true);

@@ -12,7 +12,7 @@ namespace ProcessChainTest
     public class FlowRateScopeTest
     {
         [Test]
-        public void ConstructorTest()
+        public void Constructor_ValidParameters_Success()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => { new NodeScope(-1); });
 

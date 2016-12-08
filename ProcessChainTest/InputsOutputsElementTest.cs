@@ -13,13 +13,18 @@ namespace ProcessChainTest
     public class InputsOutputsElementTest
     {
         [Test]
-        public void ConstructorTest()
+        public void Constructor_ValidParameters_Throw()
         {
             Assert.DoesNotThrow(delegate
             {
                 new InputsOutputsElement("1", new NodeScope(1),
                     FlowRateDistributionStrategy.MaxByQuotes);
             });
+        }
+
+        [Test]
+        public void Constructor_InvalidParameters_Throw()
+        {
             Assert.Throws<ArgumentNullException>(delegate
             {
                 new InputsOutputsElement("1", null,
@@ -32,27 +37,36 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void SetConnectionsTest()
+        public void SetConnections_SecondParameterSet_Throw()
+        {
+            InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(1),
+                FlowRateDistributionStrategy.MaxByQuotes);
+
+            el.SetConnections(new List<NodeConnection>(), new List<NodeConnection>());
+            Assert.Throws<InvalidOperationException>(() => { el.SetConnections(new List<NodeConnection>(), new List<NodeConnection>()); });
+        }
+
+        [Test]
+        public void SetConnections_InvalidParameters_Throw()
         {
             InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(1),
                 FlowRateDistributionStrategy.MaxByQuotes);
 
             Assert.Throws<ArgumentNullException>(() => { el.SetConnections(new List<NodeConnection>(), null); });
             Assert.Throws<ArgumentNullException>(() => { el.SetConnections(null, new List<NodeConnection>()); });
-            Assert.DoesNotThrow(() => { el.SetConnections(new List<NodeConnection>(), new List<NodeConnection>()); });
-            Assert.Throws<InvalidOperationException>(() => { el.SetConnections(new List<NodeConnection>(), new List<NodeConnection>()); });
+           
         }
 
         [Test]
-        public void UpdateFlowRatesValidationTest1()
+        public void UpdateFlowRates_IncorrectSchema_DetectRestriction()
         {
             #region Test data
             InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(17),
                 FlowRateDistributionStrategy.MaxByQuotes);
-            FlowElementMock elM1 = new FlowElementMock();
-            FlowElementMock elM2 = new FlowElementMock();
-            FlowElementMock elM3 = new FlowElementMock();
-            FlowElementMock elM4 = new FlowElementMock();
+            FakeFlowElement elM1 = new FakeFlowElement();
+            FakeFlowElement elM2 = new FakeFlowElement();
+            FakeFlowElement elM3 = new FakeFlowElement();
+            FakeFlowElement elM4 = new FakeFlowElement();
 
             var inputConn = new List<NodeConnection>()
             {
@@ -77,15 +91,15 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void UpdateFlowRatesValidationTest2()
+        public void UpdateFlowRates_IncorrectSchema_DetectRestriction2()
         {
             #region Test data
             InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(40),
                 FlowRateDistributionStrategy.MaxByQuotes);
-            FlowElementMock elM1 = new FlowElementMock();
-            FlowElementMock elM2 = new FlowElementMock();
-            FlowElementMock elM3 = new FlowElementMock();
-            FlowElementMock elM4 = new FlowElementMock();
+            FakeFlowElement elM1 = new FakeFlowElement();
+            FakeFlowElement elM2 = new FakeFlowElement();
+            FakeFlowElement elM3 = new FakeFlowElement();
+            FakeFlowElement elM4 = new FakeFlowElement();
 
             var inputConn = new List<NodeConnection>()
             {
@@ -110,16 +124,16 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void UpdateFlowRatesTest()
+        public void UpdateFlowRates_CorrectSchema_Success()
         {
             #region Test data
             InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(300),
                 FlowRateDistributionStrategy.MaxByQuotes);
-            FlowElementMock elM1 = new FlowElementMock();
-            FlowElementMock elM2 = new FlowElementMock();
-            FlowElementMock elM3 = new FlowElementMock();
-            FlowElementMock elM4 = new FlowElementMock();
-            FlowElementMock elM5 = new FlowElementMock();
+            FakeFlowElement elM1 = new FakeFlowElement();
+            FakeFlowElement elM2 = new FakeFlowElement();
+            FakeFlowElement elM3 = new FakeFlowElement();
+            FakeFlowElement elM4 = new FakeFlowElement();
+            FakeFlowElement elM5 = new FakeFlowElement();
 
             var inputConn = new List<NodeConnection>()
             {
@@ -155,7 +169,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void UpdateOutputConnectionsQuotaValidationTest()
+        public void UpdateOutputConnectionsQuota_IncorrectParameters_Throw()
         {
             InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(300),
                 FlowRateDistributionStrategy.MaxByQuotes);
@@ -165,16 +179,16 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void UpdateOutputConnectionsQuota()
+        public void UpdateOutputConnectionsQuota_ValidParameters_Success()
         {
             #region Test data
             InputsOutputsElement el = new InputsOutputsElement("1", new NodeScope(300),
                 FlowRateDistributionStrategy.MaxByQuotes);
-            FlowElementMock elM1 = new FlowElementMock();
-            FlowElementMock elM2 = new FlowElementMock();
-            FlowElementMock elM3 = new FlowElementMock();
-            FlowElementMock elM4 = new FlowElementMock();
-            FlowElementMock elM5 = new FlowElementMock();
+            FakeFlowElement elM1 = new FakeFlowElement();
+            FakeFlowElement elM2 = new FakeFlowElement();
+            FakeFlowElement elM3 = new FakeFlowElement();
+            FakeFlowElement elM4 = new FakeFlowElement();
+            FakeFlowElement elM5 = new FakeFlowElement();
 
             var inputConn = new List<NodeConnection>()
             {

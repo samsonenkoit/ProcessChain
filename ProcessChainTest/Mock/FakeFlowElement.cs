@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProcessChainTest.Mock
 {
-    public class FlowElementMock : NodeElement
+    public class FakeFlowElement : NodeElement
     {
         public Dictionary<string, double> InputFlowRate { get; set; } = new Dictionary<string, double>();
 
@@ -22,12 +22,12 @@ namespace ProcessChainTest.Mock
             }
         }
 
-        public FlowElementMock(): base(Guid.NewGuid().ToString())
+        public FakeFlowElement(): base(Guid.NewGuid().ToString())
         {
 
         }
 
-        public FlowElementMock(string id) : base(id)
+        public FakeFlowElement(string id) : base(id)
         {
         }
 

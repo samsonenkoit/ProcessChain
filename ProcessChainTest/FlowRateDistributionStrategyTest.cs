@@ -18,13 +18,13 @@ namespace ProcessChainTest
 
         private NodeConnection BuildConnection(string id, NodeConnectionQuota quota, double flowRate)
         {
-            return new NodeConnection(id, quota, new FlowElementMock("noId"), new FlowElementMock("noId"), flowRate);
+            return new NodeConnection(id, quota, new FakeFlowElement("noId"), new FakeFlowElement("noId"), flowRate);
         }
 
         #endregion
 
         [Test]
-        public void ConstructorParamsValidationTest()
+        public void MaxByQuotes_InvalidParameters_Throw()
         {
             Func<IEnumerable<NodeConnection>, IEnumerable<NodeConnection>, IDictionary<string, double>> func = FlowRateDistributionStrategy.MaxByQuotes;
 
@@ -33,7 +33,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void DistributionTest1()
+        public void MaxByQuotes_Scheme1Distribution_Success()
         {
             List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
@@ -57,7 +57,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void DistributionTest2()
+        public void MaxByQuotes_Scheme2Distribution_Success()
         {
             List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
@@ -83,7 +83,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void DistributionDirectTest()
+        public void MaxByQuotes_Scheme3Distribution_Success()
         {
             List<NodeConnection> inputConnections = new List<NodeConnection>()
             {
@@ -113,7 +113,7 @@ namespace ProcessChainTest
         }
 
         [Test]
-        public void DistributionBringingTest()
+        public void MaxByQuotes_Scheme4Distribution_Success()
         {
             List<NodeConnection> inputConnections = new List<NodeConnection>()
             {

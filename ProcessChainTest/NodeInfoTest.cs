@@ -13,10 +13,16 @@ namespace ProcessChainTest
     public class NodeInfoTest
     {
         [Test]
-        public void ConstructorTest()
+        public void Constructor_InvalidParameters_Throw()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new NodeInfo("", NodeType.Consumer, new NodeScope(1)));
 
+            
+        }
+
+        [Test]
+        public void Constructor_ValidParameters_Success()
+        {
             var scope = new NodeScope(12);
 
             var nodeInfo = new NodeInfo("21", NodeType.Extractor, scope);
